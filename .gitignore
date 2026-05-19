@@ -1,0 +1,26 @@
+# Environments
+.env
+.venv/
+venv/
+env/
+
+# Python Artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Machine Learning Weights (GitHub 100MB Limit)
+*.pth
+*.pt
+*.h5
+*.hdf5
+*.onnx
+ml_models/weights/*
+
+# Agent Artifacts
+.tmp/
+agent_artifacts/
