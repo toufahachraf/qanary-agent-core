@@ -51,12 +51,8 @@ workflow.add_edge(START, "reasoning")
 
 # Conditional Routing: 
 # `tools_condition` automatically checks if Gemini's response contains a tool_call.
-# If True -> routes to "tools" node. If False -> routes to END.
-workflow.add_conditional_edges(
-    "reasoning",
-    tools_condition,
-    {True: "tools", False: END}
-)
+# It automatically routes to the "tools" node or to END based on the model's output.
+workflow.add_conditional_edges("reasoning", tools_condition)
 
 # After the PyTorch tool finishes cropping, it routes back to Gemini 
 # so Gemini can read the JSON result and summarize it for the doctor.
