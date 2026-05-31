@@ -15,8 +15,8 @@ tools = [lesion_cropper_tool]
 
 # We use Gemini 1.5 Pro via Vertex AI for enterprise data privacy.
 # Temperature is set to 0.1 for high determinism (essential in clinical settings).
-# Pointing specifically to us-central1 and the stable 001 version to avoid 404 errors in other regions.
-llm = ChatVertexAI(model_name="gemini-1.5-pro-001", temperature=0.1, location="us-central1")
+# Explicitly binding project and un-versioned model name to resolve 404s
+llm = ChatVertexAI(model_name="gemini-1.5-pro", temperature=0.1, location="us-central1", project="novate-ai")
 llm_with_tools = llm.bind_tools(tools)
 
 # 2. Define the Reasoning Node
