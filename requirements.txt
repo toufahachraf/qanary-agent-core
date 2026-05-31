@@ -4,8 +4,9 @@ langchain-core>=0.1.52
 pydantic>=2.0.0
 
 # Google Cloud & Vertex AI Integration
-google-cloud-aiplatform>=1.42.0
-langchain-google-vertexai>=0.0.5
+# Unpinned to fetch the modern 2026 SDKs and avoid deprecated endpoint 404s
+google-cloud-aiplatform
+langchain-google-vertexai
 google-cloud-storage>=2.14.0
 
 # Machine Learning & Computer Vision
