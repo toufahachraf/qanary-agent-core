@@ -45,7 +45,16 @@ async def process_chat(request: ChatRequest):
         
         # Extract the final AI response text
         messages = final_state.get("messages", [])
-        ai_response = messages[-1].content if messages else "No response generated."
+        ai_response = "No response generated."
+        if messages:
+            content = messages[-1].content
+            # Modern LLMs (like Gemini 2.5) often return a list of content blocks instead of a simple string
+            if isinstance(content, list):
+                # Extract only the text blocks (ignoring internal 'thought_signature' blocks)
+                texts = [block.get("text", "") for block in content if isinstance(block, dict) and block.get("type") == "text"]
+                ai_response = "\n".join(texts)
+            else:
+                ai_response = str(content)
         
         # Extract Artifacts (Parse the tool outputs to find the cropped image URI)
         artifacts = Artifacts()
