@@ -18,14 +18,32 @@ def get_system_prompt(state: AgentState) -> str:
     # Format Patient Context
     patient_text = "No patient context provided yet."
     if patient_info:
-        age_str = str(patient_info.age) if patient_info.age else "Unknown"
-        markers_str = ", ".join(patient_info.genetic_markers) if patient_info.genetic_markers else "None reported"
-        patient_text = f"Patient ID: {patient_info.patient_id}\nAge: {age_str}\nGenetic Markers: {markers_str}"
+        if isinstance(patient_info, dict):
+            p_id = patient_info.get("patient_id", "Unknown")
+            p_age = patient_info.get("age")
+            p_markers = patient_info.get("genetic_markers", [])
+        else:
+            p_id = patient_info.patient_id
+            p_age = patient_info.age
+            p_markers = patient_info.genetic_markers
+            
+        age_str = str(p_age) if p_age else "Unknown"
+        markers_str = ", ".join(p_markers) if p_markers else "None reported"
+        patient_text = f"Patient ID: {p_id}\nAge: {age_str}\nGenetic Markers: {markers_str}"
         
     # Format MRI Context
     mri_text = "No scan uploaded or validated yet."
     if mri_info:
-        mri_text = f"GCP URI: {mri_info.gcs_uri}\nValidated: {mri_info.is_validated}\nModality: {mri_info.modality}"
+        if isinstance(mri_info, dict):
+            gcs_uri = mri_info.get("gcs_uri", "Unknown")
+            is_val = mri_info.get("is_validated", False)
+            modality = mri_info.get("modality", "Unknown")
+        else:
+            gcs_uri = mri_info.gcs_uri
+            is_val = mri_info.is_validated
+            modality = mri_info.modality
+            
+        mri_text = f"GCP URI: {gcs_uri}\nValidated: {is_val}\nModality: {modality}"
 
     # Construct the highly structured prompt using XML-like tags for Gemini
     prompt = f"""You are Qanary, a highly advanced Quantum Machine Learning clinical assistant.
